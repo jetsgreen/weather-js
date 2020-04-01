@@ -1,0 +1,75 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Weather App</title>
+</head>
+
+<body>
+    <div class="location">
+        <h1 class="location-timezone">
+            Timezone
+        </h1>
+        <p>Icon</p>
+    </div>
+
+    <div class="temperature">
+        <div class="degree-section">
+            <h2 class="temperature-degree">35</h2>
+            <span>F</span>
+        </div>
+        
+        <div class="temperature-description">
+            It's cold
+        </div>
+    </div>
+
+
+<script>
+    window.addEventListener("load", () => {
+        let long;
+        let lat;
+        let temperatureDescription = document.querySelector('.temperature-description');
+        let temperatureDegree = document.querySelector('.temperature-degree');
+        let locationTimezone = document.querySelector('.location-timezone')
+
+        if(navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(position =>{
+                long = position.coords.longitude;
+                lat = position.coords.latitude;
+                
+
+                const proxy = "https://cors-anywhere.herokuapp.com/";
+                const api =`${proxy}https://api.darksky.net/forecast/fd9d9c6418c23d94745b836767721ad1/${lat},${long}`;
+
+             ;
+               
+                fetch(api)
+                .then(response => {
+                    return response.json();
+                })
+                .then(data =>{
+                    console.log(data);
+                    const { temperature, summary} = data.currently;
+                    // set DOM Elements from the API
+                    
+                    temperatureDescription.innerHTML = summary;
+                    temperatureDegree.innerHTML = temperature;
+                    locationTimezone.innerHTML = data.timezone;
+                    
+
+                });
+            });
+            
+        }
+    });
+
+</script>
+
+
+</body>
+
+</html>
