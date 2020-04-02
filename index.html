@@ -26,8 +26,11 @@
         <div class="degree-section">
             <h2 class="temperature-degree">35</h2>
             <span>F</span>
+           
         </div>
-
+        <div>
+            <p>Click above to change from Faranheit to Celcius</p>
+        </div>
         <div class="temperature-description">
             It's cold
         </div>
@@ -40,7 +43,9 @@
             let lat;
             let temperatureDescription = document.querySelector('.temperature-description');
             let temperatureDegree = document.querySelector('.temperature-degree');
-            let locationTimezone = document.querySelector('.location-timezone')
+            let locationTimezone = document.querySelector('.location-timezone');
+            let temperatureSection = document.querySelector('.temperature');
+            let temperatureSpan = document.querySelector('.temperature span')
 
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(position => {
@@ -65,8 +70,23 @@
                             temperatureDescription.innerHTML = summary;
                             temperatureDegree.innerHTML = temperature;
                             locationTimezone.innerHTML = data.timezone;
+                            // Formula for celsius
+                            let celsius = (temperature - 32) * (5 / 9);
                             // Set Icon
-                            setIcons(icon, document.querySelector('.icon'))
+                            setIcons(icon, document.querySelector('.icon'));
+                            // Change temperature to Celcius/Faranheit
+
+                            temperatureSection.addEventListener('click', () => {
+                               
+                                if(temperatureSpan.innerHTML === 'F') {
+                                    temperatureSpan.innerHTML = "C";
+                                    temperatureDegree.innerHTML = celsius.toFixed(2);
+                                }else{
+                                    temperatureSpan.innerHTML = "F"
+                                    temperatureDegree.innerHTML = temperature;
+                                }
+
+                            })
 
                         });
                 });
